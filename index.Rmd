@@ -106,6 +106,18 @@ valueBox(
 )
 ```
 
+### pasca {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$lolos[7], big.mark = " "), "", sep = " "),
+  caption = "S2 dan S3",
+  icon = "fas fa-thumbs-up",
+  color = "cornflowerblue"
+)
+```
+
 Row {data-height=30}
 ---
 
@@ -186,6 +198,18 @@ valueBox(
 )
 ```
 
+### pasca {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$nim[7], big.mark = " "), "", sep = " "),
+  caption = "S2 dan S3",
+  icon = "fas fa-thumbs-up",
+  color = "cornflowerblue"
+)
+```
+
 Row
 ---
 
@@ -200,7 +224,7 @@ data <- db %>%
   summarize(total = n()) %>%
   pivot_wider(names_from = jk, values_from = total)
 names(data) <- c("Fakultas", "Laki-Laki", "Perempuan")
-data$Fakultas <- c("Hukum", "FKIP", "Teknik", "Pertanian", "FEB", "FISIP", "Kedokteran")
+data$Fakultas <- c("Hukum", "FKIP", "Teknik", "Pertanian", "FEB", "FISIP", "Pascasarjana","Kedokteran")
 ### agar sesuai urutan dibuat faktor dengan level yang berurutan
 data$Fakultas <- factor(data$Fakultas, levels = data[["Fakultas"]])
 
@@ -226,11 +250,11 @@ kable(data) %>%
 Row
 ---
 
-### **Mahasiswa Baru berdasarkan kategori sekolah asal**
+### **Mahasiswa Baru (D3 dan S1) berdasarkan kategori sekolah asal**
 
 ```{r}
 data <- db %>%
-  filter(nim == "diterima") %>%
+  filter(nim == "diterima" & jalur != "7_Pascasarjana") %>%
   group_by(negeri) %>%
   summarize(banyak = n())
 
@@ -239,11 +263,11 @@ div(plot_ly(type = "pie", labels = data$negeri, values = data$banyak,
         insidetextorientation = "radial"), align = "center")
 ```
 
-### **Mahasiswa Baru berdasarkan jenis sekolah asal**
+### **Mahasiswa Baru (D3 dan S1) berdasarkan jenis sekolah asal**
 
 ```{r}
 data <- db %>%
-  filter(nim == "diterima") %>%
+  filter(nim == "diterima" & jalur != "7_Pascasarjana") %>%
   group_by(jns_sklh) %>%
   summarize(banyak = n())
 
@@ -255,11 +279,11 @@ div(plot_ly(type = "pie", labels = data$jns_sklh, values = data$banyak,
 Row
 ---
 
-### **Mahasiswa Baru berdasarkan Provinsi asal**
+### **Mahasiswa Baru (D3 dan S1) berdasarkan Provinsi asal**
 
 ```{r}
 data <- db %>%
-  filter(nim == "diterima") %>%
+  filter(nim == "diterima" & jalur != "7_Pascasarjana") %>%
   group_by(provinsi, jk) %>%
   summarize(tot = n())
 data <- data %>%
@@ -279,7 +303,7 @@ kable(data) %>%
 
 ```{r}
 data <- db %>%
-  filter(nim == "diterima") %>%
+  filter(nim == "diterima" & jalur != "7_Pascasarjana") %>%
   group_by(pend_ortu, jk) %>%
   summarize(tot = n())
 data <- data %>%
@@ -319,7 +343,7 @@ data <- data %>%
             diterima = sum(diterima))
 
 data$fakultas <- c("Hukum", "FKIP", "Teknik", "Pertanian",
-                   "FEB", "FISIP", "Kedokteran")
+                   "FEB", "FISIP", "Pascasarjana","Kedokteran")
 data$fakultas  <- factor(data$fakultas, levels = data[["fakultas"]])
 
 plot_ly(data, x = ~fakultas, y = ~lulus, type = "bar", name = "Total") %>%
@@ -379,7 +403,8 @@ kable(data, row.names = F) %>%
   pack_rows("Pertanian", 26, 29, label_row_css = "background-color: #666; color: #fff;") %>%
   pack_rows("Ekonomi dan Bisnis", 30, 37, label_row_css = "background-color: #666; color: #fff;") %>%
   pack_rows("Ilmu Sosial dan Ilmu Politik", 38, 40, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Kedokteran", 41, 45, label_row_css = "background-color: #666; color: #fff;")
+  pack_rows("Pascasarjana", 41, 52, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Kedokteran", 53, 57, label_row_css = "background-color: #666; color: #fff;")
 
 
 ```
