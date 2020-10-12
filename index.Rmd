@@ -1,6 +1,6 @@
 ---
-title: "PMB D3 dan S1 2020"
-author: "Subbagian Registrasi"
+title: "PMB 2020"
+author: "oleh Subbagian Registrasi"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
