@@ -329,15 +329,17 @@ row
 
 ```{r}
 data <- db %>%
-  group_by(fakultas, prodi) %>%
-  summarize(lulus = n(),
+  group_by(fakultas, prodi, jalur) %>%
+  summarize(pendaftar = max(peminat),
+            lulus = n(),
             sudah = sum(na.omit(registrasi == "registrasi")),
             belum = lulus - sudah,
             diterima = sum(na.omit(nim == "diterima")))
 
 data <- data %>%
   group_by(fakultas) %>%
-  summarize(lulus = sum(lulus),
+  summarize(pendaftar = sum(pendaftar),
+            lulus = sum(lulus),
             sudah = sum(sudah),
             belum = sum(belum),
             diterima = sum(diterima))
@@ -363,12 +365,12 @@ plot_ly(data, x = ~fakultas, y = ~lulus, type = "bar", name = "Total") %>%
 data <- adorn_totals(data, where = "row", name = "Total")
 data$pers_sudah <- round(data$sudah / data$lulus * 100, 0)
 data$pers_belum <- round(data$belum / data$lulus * 100, 0)
-data <- data[,c(1:4,6:7,5)]
-names(data) <- c("Fakultas", "Lolos Seleksi", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
+data <- data[,c(1:5,7:8,6)]
+names(data) <- c("Fakultas", "Pendaftar", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
-  add_header_above(c(" " = 2, "Registrasi Berkas" = 4," " = 1))
+  add_header_above(c(" " = 3, "Registrasi Berkas" = 4," " = 1))
 
 ```
 
@@ -379,24 +381,34 @@ row
 
 ```{r}
 data <- db %>%
-  group_by(fakultas, prodi) %>%
-  summarize(lulus = n(),
+  group_by(fakultas, prodi, jalur) %>%
+  summarize(pendaftar = max(peminat),
+            lulus = n(),
             sudah = sum(na.omit(registrasi == "registrasi")),
             belum = lulus - sudah,
             diterima = sum(na.omit(nim == "diterima")))
+
+data <- data %>%
+  group_by(fakultas, prodi) %>%
+  summarize(pendaftar = sum(pendaftar),
+            lulus = sum(lulus),
+            sudah = sum(sudah),
+            belum = sum(belum),
+            diterima = sum(diterima))
+
 data <- data[, -1]
 
 data <- adorn_totals(data,where = "row", name = "Total")
 data$pers_sudah <- round(data$sudah / data$lulus * 100, 0)
 data$pers_belum <- round(data$belum / data$lulus * 100, 0)
 
-data <- data[,c(1:4,6, 7, 5)]
+data <- data[,c(1:5, 7, 8, 6)]
 
-names(data) <- c("Fakultas/Program Studi", "Lolos Seleksi", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
+names(data) <- c("Fakultas/Program Studi", "Pendaftar", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
 kable(data, row.names = F) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
-  add_header_above(c(" " = 2, "Registrasi" = 4, " " = 1)) %>%
+  add_header_above(c(" " = 3, "Registrasi" = 4, " " = 1)) %>%
   pack_rows("Hukum", 1, 1, label_row_css = "background-color: #666; color: #fff;") %>%
   pack_rows("Keguruan dan Ilmu Pendidikan", 2, 19, label_row_css = "background-color: #666; color: #fff;") %>%
   pack_rows("Teknik", 20, 25, label_row_css = "background-color: #666; color: #fff;") %>%
