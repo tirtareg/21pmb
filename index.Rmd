@@ -1,5 +1,5 @@
 ---
-title: "PMB 2020"
+title: "PMB 2021"
 author: "oleh Subbagian Registrasi"
 output: 
   flexdashboard::flex_dashboard:
@@ -16,18 +16,17 @@ Sys.setlocale("LC_TIME", "IND")
 library(tidyverse)
 library(readxl)
 
-db <- read_excel("G:/My Drive/#PMB/2020/Dashboard/maba20_4web.xlsx")
+db <- read_excel("G:/My Drive/#PMB/2021/Dashboard/maba21_4web.xlsx")
 
 data <- db %>%
-  group_by(jalur) %>%
+  group_by(jalur, jenjang) %>%
   summarize(lolos = n(),
             regis = sum(registrasi == "registrasi", na.rm = T),
             nim = sum(nim == "diterima", na.rm = T))
 
 ```
 
-Ringkasan
-===
+# Ringkasan
 
 **Pendaftar lolos seleksi di setiap jalur penerimaaan**
 
@@ -70,12 +69,24 @@ valueBox(
 )
 ```
 
+### adik {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$regis[4], big.mark = " "), "", sep = " "),
+  caption = "ADIK",
+  icon = "fas fa-thumbs-up",
+  color = "cadetblue"
+)
+```
+
 ### umm {.value-box}
 
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
-  value = paste(format(data$lolos[4], big.mark = " "), "", sep = " "),
+  value = paste(format(data$regis[5], big.mark = " "), "", sep = " "),
   caption = "D3",
   icon = "fas fa-thumbs-up",
   color = "dodgerblue"
@@ -87,39 +98,40 @@ valueBox(
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
-  value = paste(format(data$lolos[5], big.mark = " "), "", sep = " "),
+  value = paste(format(data$regis[6], big.mark = " "), "", sep = " "),
   caption = "Alih Jenjang",
   icon = "fas fa-thumbs-up",
   color = "mediumvioletred"
 )
 ```
 
-### adik {.value-box}
+
+### s2 {.value-box}
 
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
-  value = paste(format(data$lolos[6], big.mark = " "), "", sep = " "),
-  caption = "ADIK",
-  icon = "fas fa-thumbs-up",
-  color = "cadetblue"
-)
-```
-
-### pasca {.value-box}
-
-```{r}
-#sudah <- nrow(filter(db, registrasi == "registrasi"))
-valueBox(
-  value = paste(format(data$lolos[7], big.mark = " "), "", sep = " "),
-  caption = "S2 dan S3",
+  value = paste(format(data$regis[7], big.mark = " "), "", sep = " "),
+  caption = "S2",
   icon = "fas fa-thumbs-up",
   color = "cornflowerblue"
 )
 ```
 
-Row {data-height=30}
----
+### s3 {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$regis[8], big.mark = " "), "", sep = " "),
+  caption = "S3",
+  icon = "fas fa-thumbs-up",
+  color = "cornflowerblue"
+)
+```
+
+
+## Row {data-height="30"}
 
 **Mahasiswa Baru di setiap jalur penerimaan**
 
@@ -162,12 +174,24 @@ valueBox(
 )
 ```
 
-### umm {.value-box}
+### adik {.value-box}
 
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
   value = paste(format(data$nim[4], big.mark = " "), "", sep = " "),
+  caption = "ADIK",
+  icon = "fas fa-thumbs-up",
+  color = "cadetblue"
+)
+```
+
+### umm {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$nim[5], big.mark = " "), "", sep = " "),
   caption = "D3",
   icon = "fas fa-thumbs-up",
   color = "dodgerblue"
@@ -179,32 +203,33 @@ valueBox(
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
-  value = paste(format(data$nim[5], big.mark = " "), "", sep = " "),
+  value = paste(format(data$nim[6], big.mark = " "), "", sep = " "),
   caption = "Alih Jenjang",
   icon = "fas fa-thumbs-up",
   color = "mediumvioletred"
 )
 ```
 
-### adik {.value-box}
 
-```{r}
-#sudah <- nrow(filter(db, registrasi == "registrasi"))
-valueBox(
-  value = paste(format(data$nim[6], big.mark = " "), "", sep = " "),
-  caption = "ADIK",
-  icon = "fas fa-thumbs-up",
-  color = "cadetblue"
-)
-```
-
-### pasca {.value-box}
+### s2 {.value-box}
 
 ```{r}
 #sudah <- nrow(filter(db, registrasi == "registrasi"))
 valueBox(
   value = paste(format(data$nim[7], big.mark = " "), "", sep = " "),
-  caption = "S2 dan S3",
+  caption = "S2",
+  icon = "fas fa-thumbs-up",
+  color = "cornflowerblue"
+)
+```
+
+### s3 {.value-box}
+
+```{r}
+#sudah <- nrow(filter(db, registrasi == "registrasi"))
+valueBox(
+  value = paste(format(data$nim[8], big.mark = " "), "", sep = " "),
+  caption = "S3",
   icon = "fas fa-thumbs-up",
   color = "cornflowerblue"
 )
@@ -299,9 +324,10 @@ kable(data) %>%
   add_header_above(c(" " = 1, "Jenis Kelamin" = 2, " " = 1))
 ```
 
-### **Mahasiswa Baru berdasarkan pendidikan orang tua**
+<!-- ### **Mahasiswa Baru berdasarkan pendidikan orang tua** -->
 
-```{r}
+```{r eval=FALSE, include=FALSE}
+# tidak aktif
 data <- db %>%
   filter(nim == "diterima" & jalur != "7_Pascasarjana") %>%
   group_by(pend_ortu, jk) %>%
@@ -328,17 +354,29 @@ row
 ### **Progres registrasi di setiap Fakultas**
 
 ```{r}
-data <- db %>%
+data1 <- db %>%
   group_by(fakultas, prodi, jalur) %>%
-  summarize(pendaftar = max(peminat),
+  filter(jalur %in% c("1_SNMPTN", "2_SBMPTN", "3_SMMPTN"), !is.na(prodi)) %>%
+  summarize(peminat = max(peminat),
             lulus = n(),
             sudah = sum(na.omit(registrasi == "registrasi")),
             belum = lulus - sudah,
             diterima = sum(na.omit(nim == "diterima")))
 
+data2 <- db %>%
+  group_by(fakultas, prodi, jalur) %>%
+  filter(!jalur %in% c("1_SNMPTN", "2_SBMPTN", "3_SMMPTN"), !is.na(prodi)) %>%
+  summarize(peminat = max(peminat),
+            lulus = sum(na.omit(registrasi == "registrasi")),
+            sudah = sum(na.omit(registrasi == "registrasi")),
+            belum = lulus - sudah,
+            diterima = sum(na.omit(nim == "diterima")))
+
+data <- rbind(data1, data2)
+
 data <- data %>%
   group_by(fakultas) %>%
-  summarize(pendaftar = sum(pendaftar),
+  summarize(pendaftar = sum(peminat),
             lulus = sum(lulus),
             sudah = sum(sudah),
             belum = sum(belum),
@@ -366,7 +404,7 @@ data <- adorn_totals(data, where = "row", name = "Total")
 data$pers_sudah <- round(data$sudah / data$lulus * 100, 0)
 data$pers_belum <- round(data$belum / data$lulus * 100, 0)
 data <- data[,c(1:5,7:8,6)]
-names(data) <- c("Fakultas", "Pendaftar", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
+names(data) <- c("Fakultas", "Peminat", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
 kable(data) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
@@ -380,17 +418,29 @@ row
 ### **Progres registrasi di setiap Program Studi**
 
 ```{r}
-data <- db %>%
-  group_by(fakultas, prodi, jalur) %>%
-  summarize(pendaftar = max(peminat),
+data1 <- db %>%
+  group_by(fakultas, jenjang, prodi, jalur) %>%
+  filter(jalur %in% c("1_SNMPTN", "2_SBMPTN", "3_SMMPTN"), !is.na(prodi)) %>%
+  summarize(peminat = max(peminat),
             lulus = n(),
             sudah = sum(na.omit(registrasi == "registrasi")),
             belum = lulus - sudah,
             diterima = sum(na.omit(nim == "diterima")))
 
+data2 <- db %>%
+  group_by(fakultas, jenjang, prodi, jalur) %>%
+  filter(!jalur %in% c("1_SNMPTN", "2_SBMPTN", "3_SMMPTN"), !is.na(prodi)) %>%
+  summarize(peminat = max(peminat),
+            lulus = sum(na.omit(registrasi == "registrasi")),
+            sudah = sum(na.omit(registrasi == "registrasi")),
+            belum = lulus - sudah,
+            diterima = sum(na.omit(nim == "diterima")))
+
+data <- rbind(data1, data2)
+
 data <- data %>%
-  group_by(fakultas, prodi) %>%
-  summarize(pendaftar = sum(pendaftar),
+  group_by(fakultas, jenjang, prodi) %>%
+  summarize(peminat = sum(peminat),
             lulus = sum(lulus),
             sudah = sum(sudah),
             belum = sum(belum),
@@ -398,25 +448,88 @@ data <- data %>%
 
 data <- data[, -1]
 
-data <- adorn_totals(data,where = "row", name = "Total")
+
 data$pers_sudah <- round(data$sudah / data$lulus * 100, 0)
 data$pers_belum <- round(data$belum / data$lulus * 100, 0)
 
-data <- data[,c(1:5, 7, 8, 6)]
+data <- data[,c(2, 1, 3:6, 8:9, 7)]
 
-names(data) <- c("Fakultas/Program Studi", "Pendaftar", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
+names(data) <- c("Fakultas/Program Studi", "Jenjang","Peminat", "Lulus", "Ya", "Tidak", "Ya (%)", "Tidak (%)", "Bayar UKT")
+data <- adorn_totals(data,where = "row", name = "Total")
 kable(data, row.names = F) %>%
   kable_styling(bootstrap_options = "striped", full_width = F,
                 latex_options = "scale_down") %>%
-  add_header_above(c(" " = 3, "Registrasi" = 4, " " = 1)) %>%
+  add_header_above(c(" " = 4, "Registrasi" = 4, " " = 1)) %>%
   pack_rows("Hukum", 1, 1, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Keguruan dan Ilmu Pendidikan", 2, 19, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Teknik", 20, 25, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Pertanian", 26, 29, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Ekonomi dan Bisnis", 30, 37, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Ilmu Sosial dan Ilmu Politik", 38, 40, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Pascasarjana", 41, 52, label_row_css = "background-color: #666; color: #fff;") %>%
-  pack_rows("Kedokteran", 53, 57, label_row_css = "background-color: #666; color: #fff;")
+  pack_rows("Keguruan dan Ilmu Pendidikan", 2, 20, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Teknik", 20, 26, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Pertanian", 27, 30, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ekonomi dan Bisnis", 31, 38, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ilmu Sosial dan Ilmu Politik", 39, 41, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Pascasarjana", 42, 54, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Kedokteran", 55, 59, label_row_css = "background-color: #666; color: #fff;")
 
 
 ```
+
+Rekap Maba
+===
+
+Row
+---
+
+### **Rekapitulasi Mahasiswa Baru di setiap Fakultas**
+
+```{r}
+data <- db %>%
+  group_by(fakultas, jalur) %>%
+  filter(nim == "diterima") %>%
+  summarize(n =  n()) %>%
+  pivot_wider(names_from = jalur, values_from = n)
+
+data[is.na(data)] <- 0
+names(data) <- c("Fakultas", "SNMPTN", "SBMPTN", "SMMPTN", "ADIK", "UMM D3", "Alih Jenjang", "UM Pasca")
+data$Fakultas <- c("Hukum", "FKIP", "Teknik", "Pertanian", "FEB", "FISIP", "Pascasarjana", "Kedokteran")
+data <- adorn_totals(data, where = c("row", "col") , name = c("Total", "Total"))
+
+kable(data) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F,
+                latex_options = "scale_down") %>%
+  add_header_above(c(" " = 1, "Jalur Masuk" = 7," " = 1))
+
+```
+
+Row
+---
+
+### **Rekapitulasi Mahasiswa Baru di setiap Program Studi**
+
+```{r}
+data <- db %>%
+  group_by(fakultas, jenjang, prodi, jalur) %>%
+  filter(nim == "diterima") %>%
+  summarize(n =  n()) %>%
+  pivot_wider(names_from = jalur, values_from = n)
+
+data[is.na(data)] <- 0
+data <- data[,-1]
+data <- data[, c(2, 1, 3:9)]
+names(data) <- c("Fakultas/Prodi", "Jenjang", "SNMPTN", "SBMPTN", "SMMPTN", "ADIK", "UMM D3", "Alih Jenjang", "UM Pasca")
+data <- adorn_totals(data, where = c("row", "col") , name = c("Total", "Total"))
+
+kable(data, row.names = F) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F,
+                latex_options = "scale_down") %>%
+  add_header_above(c(" " = 2, "Jalur Masuk" = 7, " " = 1)) %>%
+  pack_rows("Hukum", 1, 1, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Keguruan dan Ilmu Pendidikan", 2, 20, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Teknik", 20, 26, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Pertanian", 27, 30, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ekonomi dan Bisnis", 31, 38, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Ilmu Sosial dan Ilmu Politik", 39, 41, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Pascasarjana", 42, 54, label_row_css = "background-color: #666; color: #fff;") %>%
+  pack_rows("Kedokteran", 55, 59, label_row_css = "background-color: #666; color: #fff;")
+
+
+```
+
